@@ -171,8 +171,8 @@ class Index extends Component {
                                         merchantId={alcohol.id}
                                         history={this.props.history}
                                         color={
-                                            alcohol.hot>10?"red":(
-                                                alcohol.hot>5?"yellow":"blue"
+                                            alcohol.hot>50?"red":(
+                                                alcohol.hot>10?"yellow":"blue"
                                             )
                                         }
                                     />
