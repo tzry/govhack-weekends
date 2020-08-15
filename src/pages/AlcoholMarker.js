@@ -14,7 +14,7 @@ const AlcoholMarker = (props) => {
                 style={{ backgroundColor: color, cursor: 'pointer' }}
                 title={name}
             />
-            <div className="pulse" />
+            {/*<div className="pulse" />*/}
         </div>
     );
 };
