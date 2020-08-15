@@ -23,7 +23,7 @@ class Index extends Component {
             alcoholList:[
             ],
             gambling: false,
-            distance: "5",
+            distance: "3",
             capacity: 1
         };
 
@@ -38,14 +38,14 @@ class Index extends Component {
     autoScale = ()=>{
         let zoom = 17;
         switch(this.state.distance){
-            case "5":
-                zoom = 17;
+            case "3":
+                zoom = 13;
                 break;
-            case "10":
-                zoom = 16;
+            case "5":
+                zoom = 12;
                 break;
             default:
-                zoom = 15;
+                zoom = 12;
                 break;
         }
         this.setState(
@@ -137,10 +137,10 @@ class Index extends Component {
                         >Gambling</Checkbox>
                     </Col>
                     <Col span={9}>
-                        <Select defaultValue="5" style={{ width: "140px" }} onChange={this.handleDistanceChange}>
+                        <Select defaultValue="3" style={{ width: "140px" }} onChange={this.handleDistanceChange}>
+                            <Option value="3">Around 3 km</Option>
                             <Option value="5">Around 5 km</Option>
                             <Option value="10">Around 10 km</Option>
-                            <Option value="20">Around 20 km</Option>
                         </Select>
                     </Col>
                     <Col span={8} style={{textAlign:"center"}}>
