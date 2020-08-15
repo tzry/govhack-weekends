@@ -1,32 +1,61 @@
 import React, { useState, useEffect, Component } from "react";
-import {List} from 'antd'
+import {List, Row, Col} from 'antd'
 import './merchant.css'
+import availableSvg from '../../assert/available.svg'
+import insideSvg from '../../assert/inside.svg'
+import axios from 'axios';
+import {PREMISES} from "../../api/address";
+import weekendsLogo from '../../assert/weekends-logo.jpeg'
 
 class Merchant extends Component {
     constructor(props){
         super(props);
         this.state={
             id: props.match.params.id,
-            img: "https://www.coles.com.au/content/dam/coles/about-coles/our-businesses/images/our-businesses-liquorland-800x480px.jpg",
-            name:'test club',
+            img: weekendsLogo,
+            name:'',
             goods:[
-                {
-                    id: 1,
-                    name: 'Wine',
-                    price: '5.24'
-                },
-                {
-                    id: 2,
-                    name: 'Red Wine',
-                    price: '225.24'
-                },
-                {
-                    id: 3,
-                    name: 'Whiskey',
-                    price: '35.24'
-                },
-            ]
+            ],
+            inside:0,
+            available:0,
+            address:""
         };
+    }
+
+    componentDidMount() {
+        this.requestData();
+    }
+
+    requestData = ()=>{
+        axios.get(PREMISES+"/"+this.state.id,{
+            params:{
+            }
+        })
+            .then((res)=>{
+
+                let list = [];
+                if(res.data.data.drinks) {
+                    res.data.data.drinks.map((drink, i) => (
+                        {
+                            id: drink.id,
+                            name: drink.name,
+                            price: drink.real_price,
+                        }
+                    ));
+                }
+
+                this.setState(
+                    {
+                        name: res.data.data.name,
+                        goods: list,
+                        inside: res.data.data.inside,
+                        available: res.data.data.available,
+                        address: res.data.data.address + " " + res.data.data.suburb + " NSW " +res.data.data.post_code
+                    });
+            })
+            .catch((err)=>{
+                console.log(err);
+            });
     }
 
     render() {
@@ -39,7 +68,24 @@ class Merchant extends Component {
                     this.props.history.push("/merchant-detail/"+this.state.id);
                 }}>
                     <p className="store-name">{this.state.name}</p>
+                    <p className="store-address">{this.state.address}</p>
                 </div>
+                <Row>
+                    <Col span="12">
+                        <div className="store-available">
+                            <img src={insideSvg} />
+                            <p>Inside</p>
+                            <p className="value">{this.state.inside}</p>
+                        </div>
+                    </Col>
+                    <Col span="12">
+                        <div className="store-available">
+                            <img src={availableSvg} />
+                            <p>Available</p>
+                            <p className="value">{this.state.available}</p>
+                        </div>
+                    </Col>
+                </Row>
                 <div className="store-goods">
                     <List
                         dataSource={this.state.goods}

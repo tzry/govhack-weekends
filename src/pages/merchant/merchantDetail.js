@@ -4,26 +4,68 @@ import './merchantDetail.css'
 import AlcoholMarker from "../AlcoholMarker";
 import {Col, Row, Descriptions} from "antd";
 import {PhoneOutlined} from '@ant-design/icons'
+import axios from "axios";
+import {PREMISES} from "../../api/address";
 
 class MerchantDetail extends Component {
     constructor(props){
         super(props);
         this.state={
             id: props.match.params.id,
-            img: "https://www.coles.com.au/content/dam/coles/about-coles/our-businesses/images/our-businesses-liquorland-800x480px.jpg",
-            name:'test club',
+            name:'',
             pos:{
                 center: {
-                    lat: -33.8296832,
-                    lng: 151.126016
+                    lat: 0,
+                    lng: 0
                 },
                 zoom: 18
             },
-            hot: 5,
-            tel: '0400000000',
-            address: '146 Arthur Street North Sydney NSW 2060'
+            address: '',
+            close_time: ""
         };
     }
+
+    componentDidMount() {
+        this.requestData();
+    }
+
+    requestData = ()=>{
+        axios.get(PREMISES+"/"+this.state.id,{
+            params:{
+            }
+        })
+            .then((res)=>{
+
+                let list = [];
+                if(res.data.data.drinks) {
+                    res.data.data.drinks.map((drink, i) => (
+                        {
+                            id: drink.id,
+                            name: drink.name,
+                            price: drink.real_price,
+                        }
+                    ));
+                }
+
+                this.setState(
+                    {
+                        name: res.data.data.name,
+                        pos:{
+                            center:{
+                                lat: res.data.data.longitude,
+                                lng: res.data.data.latitude
+                            },
+                            zoom: 17
+                        },
+                        address: res.data.data.address + " " + res.data.data.suburb + " NSW " +res.data.data.post_code,
+                        close_time: res.data.data.close_time
+                    });
+            })
+            .catch((err)=>{
+                console.log(err);
+            });
+    }
+
 
     render() {
         return (
@@ -39,9 +81,10 @@ class MerchantDetail extends Component {
                     </iframe>
                 </div>
                 <Descriptions bordered>
-                    <Descriptions.Item label="Tel">{this.state.tel}</Descriptions.Item>
-                    <Descriptions.Item label="Tel">{this.state.tel}</Descriptions.Item>
-                    <Descriptions.Item label="Tel">{this.state.tel}</Descriptions.Item>
+                    <Descriptions.Item label="Name">{this.state.name}</Descriptions.Item>
+                    <Descriptions.Item label="Gambling">{this.state.gaming?"Allowed":"Restricted"}</Descriptions.Item>
+                    <Descriptions.Item label="Address">{this.state.address}</Descriptions.Item>
+                    <Descriptions.Item label="Close Time">{this.state.close_time}</Descriptions.Item>
                 </Descriptions>
             </div>
         );

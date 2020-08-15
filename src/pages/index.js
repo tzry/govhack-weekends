@@ -1,8 +1,11 @@
 import React, { useState, useEffect, Component } from "react";
 import GoogleMapReact from 'google-map-react';
 import { Row, Col, Checkbox, Select, InputNumber } from 'antd';
-import AlcoholMarker from './AlcoholMarker'
+import AlcoholMarker from './AlcoholMarker';
+import axios from 'axios';
 import './index.css'
+import {PREMISES} from "../api/address";
+
 const { Option } = Select;
 
 class Index extends Component {
@@ -18,27 +21,6 @@ class Index extends Component {
                 zoom: 17
             },
             alcoholList:[
-                {
-                    id: 1,
-                    lat: '-33.8296832',
-                    lon: '151.126016',
-                    name: "Alcohol",
-                    hot: 11
-                },
-                {
-                    id: 2,
-                    lat: '-33.8296632',
-                    lon: '151.126016',
-                    name: "Alcohol",
-                    hot: 5
-                },
-                {
-                    id: 3,
-                    lat: '-33.8296832',
-                    lon: '151.126616',
-                    name: "Alcohol",
-                    hot: 1
-                }
             ],
             gambling: false,
             distance: "5",
@@ -87,11 +69,40 @@ class Index extends Component {
                     },
                     zoom:this.state.pos.zoom
                 }
-            },this.autoScale
+            },this.requestData
         );
     }
 
     requestData = ()=>{
+        let params={
+            longitude: this.state.pos.center.lat,
+            latitude: this.state.pos.center.lng,
+            range: this.state.distance,
+            customer_count: this.state.capacity,
+        };
+        if(this.state.gambling){
+            params.params = true;
+        }
+        axios.get(PREMISES,{
+            params:params
+        })
+            .then((res)=>{
+                let list = res.data.data.map((store,i)=>(
+                    {
+                        id: i,
+                        lat: store.longitude,
+                        lon: store.latitude,
+                        name: store.name,
+                        hot: store.heat
+                    }
+                ));
+                this.setState({
+                    alcoholList: list
+                })
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
         this.autoScale();
     }
 
@@ -117,7 +128,7 @@ class Index extends Component {
 
         return (
             <div className="index-content">
-                <Row style={{height:"40px"}}>
+                <Row align="middle" style={{height:"40px"}}>
                     <Col span={1}>
                     </Col>
                     <Col span={6} style={{lineHeight:"28px"}}>

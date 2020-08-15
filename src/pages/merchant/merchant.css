@@ -37,3 +37,23 @@
 .store-goods .goods .goods-price{
     color: red;
 }
+.store-available{
+    padding-top: 20px;
+    text-align: center;
+}
+.store-available p{
+    padding-top: 5px;
+    margin-bottom: 0;
+    color: black;
+}
+.store-available img{
+    width:40%;
+}
+.store-available .value{
+    font-weight: bolder;
+}
+.store-address {
+    font-size: 14px;
+    color: black;
+    margin-left: 20px;
+}
