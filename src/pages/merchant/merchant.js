@@ -35,7 +35,7 @@ class Merchant extends Component {
 
                 let list = [];
                 if(res.data.data.drinks) {
-                    res.data.data.drinks.map((drink, i) => (
+                    list = res.data.data.drinks.map((drink, i) => (
                         {
                             id: drink.id,
                             name: drink.name,
