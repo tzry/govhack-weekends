@@ -146,7 +146,7 @@ class Index extends Component {
                     <Col span={8} style={{textAlign:"center"}}>
                         <InputNumber min={1}
                                      style={{width:"40%"}}
-                                     max={10}
+                                     max={1000}
                                      defaultValue={1}
                                      precision={0}
                                      step = {1}
