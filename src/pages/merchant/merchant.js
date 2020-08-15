@@ -35,7 +35,9 @@ class Merchant extends Component {
                 <div>
                     <img className="merchant-bg-img" src={this.state.img} />
                 </div>
-                <div className="store-card">
+                <div className="store-card" onClick={()=>{
+                    this.props.history.push("/merchant-detail/"+this.state.id);
+                }}>
                     <p className="store-name">{this.state.name}</p>
                 </div>
                 <div className="store-goods">

@@ -20,17 +20,17 @@ function Header(props) {
 
   return (
       <Row className="header-row">
-          <Col span={2} className="back-nav">
+          <Col span={4} className="back-nav">
               {showBack?<LeftOutlined onClick={
                   ()=>{
                       props.history.go(-1);
                   }
               }/>:null}
           </Col>
-          <Col span={20} style={{textAlign:"center"}}>
+          <Col span={16} style={{textAlign:"center"}}>
              <img className="header-logo" src={weekendsLogo} />
           </Col>
-          <Col span={2}>
+          <Col span={4}>
           </Col>
       </Row>
   );

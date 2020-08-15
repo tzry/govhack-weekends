@@ -5,8 +5,9 @@ const AlcoholMarker = (props) => {
     const { color, name, merchantId, history } = props;
     return (
         <div onClick={()=>{
-            console.log(history)
-            history.push('/merchant/'+merchantId);
+            if(history!=null){
+                history.push('/merchant/'+merchantId);
+            }
         }}>
             <div
                 className="pin bounce"

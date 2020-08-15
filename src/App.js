@@ -7,6 +7,7 @@ import Footer from './component/footer'
 import Header from './component/header'
 import Index from './pages/index'
 import Merchant from './pages/merchant/merchant'
+import MerchantDetail from './pages/merchant/merchantDetail'
 const { Content } = Layout;
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
                   <Switch>
                       <Route path='/' exact component={Index} />
                       <Route path='/merchant/:id' component={Merchant} />
+                      <Route path='/merchant-detail/:id' component={MerchantDetail} />
                   </Switch>
               </Content>
               <Footer />

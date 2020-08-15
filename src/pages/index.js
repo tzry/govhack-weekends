@@ -143,7 +143,7 @@ class Index extends Component {
                                      People
                     </Col>
                 </Row>
-                <Row style={{height:"calc(100vh - 140px)"}}>
+                <div style={{height:"calc(100vh - 140px)"}}>
                     <GoogleMapReact
                         bootstrapURLKeys={{ key: 'AIzaSyCyUX-TouPrmvcSdbaDN7h59gSNlKKfp2Q'}}
                         center={this.state.pos.center}
@@ -169,7 +169,7 @@ class Index extends Component {
                             })
                         }
                     </GoogleMapReact>
-                </Row>
+                </div>
             </div>
         );
     }
