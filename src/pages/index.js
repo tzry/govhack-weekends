@@ -15,7 +15,7 @@ class Index extends Component {
                     lat: -33.8296832,
                     lng: 151.126016
                 },
-                zoom: 15
+                zoom: 17
             },
             alcoholList:[
                 {
@@ -41,7 +41,7 @@ class Index extends Component {
                 }
             ],
             gambling: false,
-            distance: 5,
+            distance: "5",
             capacity: 1
         };
 
@@ -77,6 +77,7 @@ class Index extends Component {
     }
 
     showPosition=(position)=>{
+        console.log(position.coords)
         this.setState(
             {
                 pos:{
@@ -142,7 +143,7 @@ class Index extends Component {
                                      People
                     </Col>
                 </Row>
-                <Row style={{height:"calc(100vh - 120px)"}}>
+                <Row style={{height:"calc(100vh - 140px)"}}>
                     <GoogleMapReact
                         bootstrapURLKeys={{ key: 'AIzaSyCyUX-TouPrmvcSdbaDN7h59gSNlKKfp2Q'}}
                         center={this.state.pos.center}
