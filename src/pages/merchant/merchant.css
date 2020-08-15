@@ -28,6 +28,10 @@
 .store-goods{
     background: white;
 }
+.store-goods .goods{
+    padding-left: 30px;
+    padding-right: 30px;
+}
 .store-goods .goods p{
     margin-left: 30px;
 }
