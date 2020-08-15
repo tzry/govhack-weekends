@@ -12,16 +12,16 @@ const { Content } = Layout;
 function App() {
   return (
       <Layout>
-        <Header />
-        <Content className="content-section">
           <Router>
-            <Switch>
-              <Route path='/' exact component={Index} />
-              <Route path='/merchant/:id' component={Merchant} />
-            </Switch>
+              <Header />
+              <Content className="content-section">
+                  <Switch>
+                      <Route path='/' exact component={Index} />
+                      <Route path='/merchant/:id' component={Merchant} />
+                  </Switch>
+              </Content>
+              <Footer />
           </Router>
-        </Content>
-        <Footer />
       </Layout>
   );
 }

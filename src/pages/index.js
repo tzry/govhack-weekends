@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Component } from "react";
 import GoogleMapReact from 'google-map-react';
-import { Row, Col, Checkbox, Select } from 'antd';
+import { Row, Col, Checkbox, Select, InputNumber } from 'antd';
 import AlcoholMarker from './AlcoholMarker'
 import './index.css'
 const { Option } = Select;
@@ -15,7 +15,7 @@ class Index extends Component {
                     lat: -33.8296832,
                     lng: 151.126016
                 },
-                zoom: 11
+                zoom: 15
             },
             alcoholList:[
                 {
@@ -26,14 +26,14 @@ class Index extends Component {
                     hot: 11
                 },
                 {
-                    id: 1,
+                    id: 2,
                     lat: '-33.8296632',
                     lon: '151.126016',
                     name: "Alcohol",
                     hot: 5
                 },
                 {
-                    id: 1,
+                    id: 3,
                     lat: '-33.8296832',
                     lon: '151.126616',
                     name: "Alcohol",
@@ -41,7 +41,8 @@ class Index extends Component {
                 }
             ],
             gambling: false,
-            distance: 5
+            distance: 5,
+            capacity: 1
         };
 
     }
@@ -52,8 +53,30 @@ class Index extends Component {
         }
     }
 
+    autoScale = ()=>{
+        let zoom = 17;
+        switch(this.state.distance){
+            case "5":
+                zoom = 17;
+                break;
+            case "10":
+                zoom = 16;
+                break;
+            default:
+                zoom = 15;
+                break;
+        }
+        this.setState(
+            {
+                pos:{
+                    center: this.state.pos.center,
+                    zoom:zoom
+                }
+            }
+        );
+    }
+
     showPosition=(position)=>{
-        console.log(position)
         this.setState(
             {
                 pos:{
@@ -61,22 +84,32 @@ class Index extends Component {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
                     },
-                    zoom:11
+                    zoom:this.state.pos.zoom
                 }
-            }
+            },this.autoScale
         );
+    }
+
+    requestData = ()=>{
+        this.autoScale();
     }
 
     onGamblingChange=(e)=>{
         this.setState({
             gambling: e.target.checked
-        });
+        },this.requestData);
     }
 
     handleDistanceChange=(value)=>{
         this.setState({
             distance: value
-        })
+        },this.requestData)
+    }
+
+    handleCapacityChange=(value)=>{
+        this.setState({
+            capacity: value
+        },this.requestData)
     }
 
     render() {
@@ -84,28 +117,36 @@ class Index extends Component {
         return (
             <div className="index-content">
                 <Row style={{height:"40px"}}>
-                    <Col span={3}>
+                    <Col span={1}>
                     </Col>
                     <Col span={6} style={{lineHeight:"28px"}}>
                         <Checkbox onChange={this.onGamblingChange}
                                   checked={this.state.gambling}
                         >Gambling</Checkbox>
                     </Col>
-                    <Col span={12}>
-                        <Select defaultValue="5" style={{ width: "150px" }} onChange={this.handleDistanceChange}>
+                    <Col span={9}>
+                        <Select defaultValue="5" style={{ width: "140px" }} onChange={this.handleDistanceChange}>
                             <Option value="5">Around 5 km</Option>
                             <Option value="10">Around 10 km</Option>
                             <Option value="20">Around 20 km</Option>
                         </Select>
                     </Col>
-                    <Col span={3}>
+                    <Col span={8} style={{textAlign:"center"}}>
+                        <InputNumber min={1}
+                                     style={{width:"40%"}}
+                                     max={10}
+                                     defaultValue={1}
+                                     precision={0}
+                                     step = {1}
+                                     onChange={this.handleCapacityChange} />
+                                     People
                     </Col>
                 </Row>
                 <Row style={{height:"calc(100vh - 120px)"}}>
                     <GoogleMapReact
                         bootstrapURLKeys={{ key: 'AIzaSyCyUX-TouPrmvcSdbaDN7h59gSNlKKfp2Q'}}
-                        defaultCenter={this.state.pos.center}
-                        defaultZoom={this.state.pos.zoom}
+                        center={this.state.pos.center}
+                        zoom={this.state.pos.zoom}
                     >
                         {
                             this.state.alcoholList.map((alcohol,i)=>{
